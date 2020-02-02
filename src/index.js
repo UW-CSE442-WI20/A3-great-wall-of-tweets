@@ -19,18 +19,20 @@ var svg = d3.select("#my_dataviz")
         "translate(" + margin.left + "," + margin.top + ")");
 
 //Read the data
-d3.csv("cleaner-csv.csv").then(function(data) {
-
+const csvFile = require('./cleaner_csv.csv');
+d3.csv(csvFile).then(function(data) {
+    console.log(data);
     // Add X axis
-    var x = d3.scaleTime()
-        .domain(d3.extent(data, function(d) { return d.Date; }));
+    var x = d3.scaleLinear()
+        .domain([0, 100000])
+        .range([ 0, height]);
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x));
 
     // Add Y axis
     var y = d3.scaleLinear()
-        .domain([0, 9])
+        .domain([0, 100000])
         .range([ height, 0]);
     svg.append("g")
         .call(d3.axisLeft(y));
@@ -44,7 +46,7 @@ d3.csv("cleaner-csv.csv").then(function(data) {
     // Highlight the specie that is hovered
     var highlight = function(d){
 
-        selected_specie = d.Species
+        selected_specie = d.Likes
 
         d3.selectAll(".dot")
             .transition()
@@ -74,8 +76,8 @@ d3.csv("cleaner-csv.csv").then(function(data) {
         .data(data)
         .enter()
         .append("circle")
-        //.attr("class", function (d) { return "dot " + d. } )
-        .attr("cx", function (d) { return x(d.Date); } )
+        .attr("class", function (d) { return "dot " + d.Likes } )
+        .attr("cx", function (d) { return x(d.Likes); } )
         .attr("cy", function (d) { return y(d.Retweets); } )
         .attr("r", 5)
         .style("fill", "blue" )
