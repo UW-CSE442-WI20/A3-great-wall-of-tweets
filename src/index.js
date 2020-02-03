@@ -30,7 +30,7 @@ d3.csv(csvFile).then(function(data) {
 
     // Zoom feature
     var zoom = d3.zoom()
-        .scaleExtent([0.5, 20])
+        .scaleExtent([1, 20])
         .extent([[0, 0], [width, height]])
         .on("zoom", updateChart);
 
