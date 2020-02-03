@@ -22,11 +22,21 @@ var svg = d3.select("#my_dataviz")
 var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 const csvFile = require('./cleaner_csv.csv');
 d3.csv(csvFile).then(function(data) {
+    
     // Convert to Date format
     data.forEach(function(d) {
         d.Date = parseTime(d.Date);
     });
 
+    // Zoom feature
+    var zoom = d3.zoom()
+        .scaleExtent([0.5, 20])
+        .extent([[0, 0], [width, height]])
+        .on("zoom", updateChart);
+
+    svg.call(zoom)
+
+    
     // Add X axis
     var x = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.Date; }))
@@ -42,6 +52,14 @@ d3.csv(csvFile).then(function(data) {
     var yAxis = svg.append("g")
         .call(d3.axisLeft(y));
 
+    svg.append("rect")
+        .attr("width", width)
+        .attr("height", height)
+        .style("fill", "none")
+        .style("pointer-events", "all")
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+        .call(zoom);
+    
     // Define the div for the tooltip
     var div = d3.select("body")
         .append("div")
@@ -57,9 +75,11 @@ d3.csv(csvFile).then(function(data) {
         .attr("x", 0)
         .attr("y", 0);
 
-    // Add dots
+
     var scatter = svg.append('g')
         .attr("clip-path", "url(#clip)");
+
+    // Add dots
     scatter.selectAll("dot")
         .data(data)
         .enter()
@@ -82,20 +102,7 @@ d3.csv(csvFile).then(function(data) {
                 .duration(500)
                 .style("opacity", 0);
         });
-
-    // Zoom feature
-    var zoom = d3.zoom()
-        .scaleExtent([0.5, 20])
-        .extent([[0, 0], [width, height]])
-        .on("zoom", updateChart);
-
-    svg.append("rect")
-        .attr("width", width)
-        .attr("height", height)
-        .style("fill", "none")
-        .style("pointer-events", "all")
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-        .call(zoom);
+    
 
     // Updates chart when zooming
     function updateChart() {
