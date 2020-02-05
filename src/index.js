@@ -29,42 +29,58 @@ d3.select("#form")
         d3.event.preventDefault();
         var input = document.getElementById("input").value;
         var tokens = input.split(" ");
+        var searchResults = [];
         d3.csv(wordData).then(function(data) {
             // list of tweet IDs matching the search
-            var searchResults = [];
+            //var searchResults = [];
             data.forEach(function(d) {
                 d.Date = parseTime(d.Date);
                 if (tokens[0].toLowerCase() === d.Word) {
                     searchResults.push(d.Date);
                 }
             });
+            console.log(searchResults);
             var i;
             for (i = 1; i < tokens.length; i++) {
                 // For the rest of the tokens
                 var intermediateResults = [];
-                data.forEach(function (d) {
-                   d.Date = parseTime(d.Date);
+                data.forEach(function(d) {
+                   //d.Date = parseTime(d.Date);
+                   //console.log(d.Date);
                    var j;
                    var len = searchResults.length;
                    if (tokens[i].toLowerCase() === d.Word) {
+                       // If the word matches our next token.
+                       d.Date = parseTime(d.Date);
+                       console.log("Entered if statement\n");
                        for (j = 0; j < len; j++) {
-                            if (d.Date === searchResults[i]) {
-                                intermediateResults.push(d.Date);
-                            }
+                          // console.log(searchResults[i]);
+                           if (d.Date === searchResults[j]) {
+                            console.log("pushing date\n");
+                            intermediateResults.push(d.Date);
+                        }
                        }
                    }
                 });
+                console.log(intermediateResults);
                 searchResults = intermediateResults;
             }
 
             // Clear and draw updated scatterplot
+            /*
             d3.selectAll("g > *").remove();
             if (input == "") {      // User did not input anything
                 drawScatter(null);
             } else {
                 drawScatter(searchResults);
-            }
+            }*/
         })
+        d3.selectAll("g > *").remove();
+        if (input == "") {      // User did not input anything
+            drawScatter(null);
+        } else {
+            drawScatter(searchResults);
+        }
     });
 
 // Draw scatterplot
