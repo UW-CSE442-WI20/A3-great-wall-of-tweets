@@ -59,10 +59,12 @@ function drawScatter(searchResults) {
         // Zoom feature
         var zoom = d3.zoom()
             .scaleExtent([1, 20])
+            //translateExtent insert bounds
+            //or restrict zoom to one axis
             .extent([[0, 0], [width, height]])
             .on("zoom", updateChart);
 
-        svg.call(zoom)
+        //svg.call(zoom)
 
         // Add X axis
         var x = d3.scaleTime()
@@ -93,7 +95,8 @@ function drawScatter(searchResults) {
         var div = d3.select("body")
             .append("div")
             .attr("class", "tooltip")
-            .style("opacity", 0);
+            .style("opacity", 0)
+            .style("pointer-events", "none");
 
         // Add a clipPath: everything out of this area won't be drawn.
         var clip = svg.append("defs").append("svg:clipPath")
@@ -142,7 +145,8 @@ function drawScatter(searchResults) {
                     .style("opacity", 0);
             });
 
-
+        var scat = scatter
+            .selectAll("circle");
         // Update chart when zooming
         function updateChart() {
 
@@ -155,9 +159,8 @@ function drawScatter(searchResults) {
             yAxis.call(d3.axisLeft(newY))
 
             // Update circle position
-            scatter
-                .selectAll("circle")
-                .attr('cx', function (d) {
+            
+                scat.attr('cx', function (d) {
                     return newX(d.Date)
                 })
                 .attr('cy', function (d) {
