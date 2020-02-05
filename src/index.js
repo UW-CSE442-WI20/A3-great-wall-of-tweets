@@ -28,15 +28,34 @@ d3.select("#form")
     .on("submit", function(d) {
         d3.event.preventDefault();
         var input = document.getElementById("input").value;
+        var tokens = input.split(" ");
         d3.csv(wordData).then(function(data) {
             // list of tweet IDs matching the search
             var searchResults = [];
             data.forEach(function(d) {
                 d.Date = parseTime(d.Date);
-                if (input.toLowerCase() === d.Word) {
+                if (tokens[0].toLowerCase() === d.Word) {
                     searchResults.push(d.Date);
                 }
             });
+            var i;
+            for (i = 1; i < tokens.length; i++) {
+                // For the rest of the tokens
+                var intermediateResults = [];
+                data.forEach(function (d) {
+                   d.Date = parseTime(d.Date);
+                   var j;
+                   var len = searchResults.length;
+                   if (tokens[i].toLowerCase() === d.Word) {
+                       for (j = 0; j < len; j++) {
+                            if (d.Date === searchResults[i]) {
+                                intermediateResults.push(d.Date);
+                            }
+                       }
+                   }
+                });
+                searchResults = intermediateResults;
+            }
 
             // Clear and draw updated scatterplot
             d3.selectAll("g > *").remove();
