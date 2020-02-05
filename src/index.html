@@ -18,15 +18,32 @@
       pointer-events: none;
       text-align: center;
     }
+
+    input[type=text] {
+      padding: 12px 20px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border: 2px solid #00acee;
+      border-radius: 4px;
+    }
+
+    input[type=submit] {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 13px 20px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
   </style>
   <body>
     <h1>Great Wall of Tweets</h1>
-    <form id="myform">
-      <input type="submit" id="submit"  value="Add to list" >
-      <input type="text" id="myVal" placeholder="Add some text">
+    <form id="form">
+      <input type="text" id="input" placeholder="Add some text">
+      <input type="submit" id="submit"  value="Search" >
     </form>
     <!-- Create a div where the graph will take place -->
-    <div id="my_dataviz"></div>
+    <div id="dataviz"></div>
     <script src="./index.js"></script>
   </body>
 </html>
