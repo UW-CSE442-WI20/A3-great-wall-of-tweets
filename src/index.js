@@ -1,16 +1,12 @@
 const d3 = require('d3');
-
-// Initial view
 const csvFile = require('./cleaner_csv.csv');
-var fullList = [];
-d3.csv(csvFile).then(function(data) {
-    // Convert to Date format
-    data.forEach(function (d) {
-        d.Date = parseTime(d.Date);
-        fullList.push(d.Date);
-    });
-});
-drawScatter(fullList);
+const wordData = require('./words_to_id.csv');
+var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
+var myList;
+
+
+//initial view
+drawScatter(myList);
 
 // Set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 60},
@@ -26,8 +22,8 @@ var svg = d3.select("#dataviz")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
-var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
-const wordData = require('./words_to_id.csv');
+
+//search callback
 d3.select("#form")
     .on("submit", function(d) {
         d3.event.preventDefault();
@@ -45,7 +41,7 @@ d3.select("#form")
             // Clear and draw updated scatterplot
             d3.selectAll("g > *").remove();
             if (input == "") {      // User did not input anything
-                drawScatter(fullList);
+                drawScatter(null);
             } else {
                 drawScatter(searchResults);
             }
@@ -84,7 +80,7 @@ function drawScatter(searchResults) {
             .range([height, 0]);
         var yAxis = svg.append("g")
             .call(d3.axisLeft(y));
-
+        
         svg.append("rect")
             .attr("width", width)
             .attr("height", height)
@@ -111,14 +107,11 @@ function drawScatter(searchResults) {
         var scatter = svg.append('g')
             .attr("clip-path", "url(#clip)");
 
-        // Add dots
+        //Add dots
         scatter.selectAll("dot")
             .data(data)
             .enter()
             .append("circle")
-            .attr("class", function (d) {
-                return "dot " + d.Date;
-            })
             .attr("cx", function (d) {
                 return x(d.Date);
             })
@@ -127,6 +120,7 @@ function drawScatter(searchResults) {
             })
             .attr("r", 3)
             .style("fill", function(d) {
+                if(searchResults == null){return "blue"}
                 for (var i = 0; i < searchResults.length; i++) {
                     if (searchResults[i] != null && searchResults[i].getTime() === d.Date.getTime()) {
                         return "blue";
