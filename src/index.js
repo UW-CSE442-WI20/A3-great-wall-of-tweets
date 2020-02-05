@@ -61,8 +61,9 @@ function drawScatter(searchResults) {
             .scaleExtent([1, 20])
             //translateExtent insert bounds
             //or restrict zoom to one axis
+            .translateExtent([[0, 0], [width, height]])
             .extent([[0, 0], [width, height]])
-            .on("zoom", updateChart);
+            .on("zoom", zoomed);
 
         //svg.call(zoom)
 
@@ -163,6 +164,17 @@ function drawScatter(searchResults) {
                 scat.attr('cx', function (d) {
                     return newX(d.Date)
                 })
+                .attr('cy', function (d) {
+                    return newY(d.Popularity_log)
+                });
+        }
+        function zoomed() {
+            var newX = d3.event.transform.rescaleX(x);
+            var newY = d3.event.transform.rescaleY(y);
+            xAxis.call(d3.axisBottom(newX))
+            scat.attr('cx', function (d) {
+                return newX(d.Date)
+            })
                 .attr('cy', function (d) {
                     return newY(d.Popularity_log)
                 });
