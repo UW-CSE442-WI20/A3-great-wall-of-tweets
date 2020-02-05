@@ -18,11 +18,21 @@ var svg = d3.select("#my_dataviz")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
+/*function handleClick(event){
+    console.log(document.getElementById("myVal").value)
+    return false;
+}*/
+
 //Read the data
 var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 const csvFile = require('./cleaner_csv.csv');
 d3.csv(csvFile).then(function(data) {
-    
+
+    d3.select("#myform")
+        .on("click", function(d) {
+            console.log(document.getElementById("myVal").value);
+        });
+
     // Convert to Date format
     data.forEach(function(d) {
         d.Date = parseTime(d.Date);
