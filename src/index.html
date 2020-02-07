@@ -12,7 +12,7 @@
       height: auto;
       padding: 2px;
       font: 12px arial;
-      background: #00acee;
+      background: #ece6e4;
       border: 0px;
       border-radius: 8px;
       pointer-events: none;
@@ -35,11 +35,19 @@
       margin: 4px 2px;
       cursor: pointer;
     }
+
+    p.click {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   </style>
   <body>
     <h1>Great Wall of Tweets</h1>
+    <p class="click" id="link1">America</p>
+    <p class="click" id="link2">Clinton</p>
+    <p class="click" id="link3">Republican</p>
     <form id="form">
-      <input type="text" id="input" placeholder="Add some text">
+      <input type="text" id="input" placeholder="Enter a keyword...">
       <input type="submit" id="submit"  value="Search" >
     </form>
     <!-- Create a div where the graph will take place -->

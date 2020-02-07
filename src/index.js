@@ -22,6 +22,61 @@ var svg = d3.select("#dataviz")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
+// First suggestion
+d3.select("#link1")
+    .on("click", function(d) {
+        d3.event.preventDefault();
+        d3.csv(wordData).then(function(data) {
+            var americaResults = [];
+            data.forEach(function(d) {
+                d.Date = parseTime(d.Date);
+                if (d.Word === 'america') {
+                    americaResults.push(d.Date);
+                }
+            });
+
+            d3.selectAll("g > *").remove();
+            drawScatter(americaResults);
+        })
+    });
+
+// Second suggestion
+d3.select("#link2")
+    .on("click", function(d) {
+        d3.event.preventDefault();
+        d3.csv(wordData).then(function(data) {
+            var clintonResults = [];
+            data.forEach(function(d) {
+                d.Date = parseTime(d.Date);
+                if (d.Word === 'clinton') {
+                    clintonResults.push(d.Date);
+                }
+            });
+
+            d3.selectAll("g > *").remove();
+            drawScatter(clintonResults);
+        })
+    });
+
+// Third suggestion
+d3.select("#link3")
+    .on("click", function(d) {
+        d3.event.preventDefault();
+        d3.csv(wordData).then(function(data) {
+            var americaResults = [];
+            data.forEach(function(d) {
+                d.Date = parseTime(d.Date);
+                if (d.Word === 'republican') {
+                    americaResults.push(d.Date);
+                }
+            });
+
+            d3.selectAll("g > *").remove();
+            drawScatter(americaResults);
+        })
+    });
+
+
 
 //search callback
 d3.select("#form")
@@ -149,10 +204,10 @@ function drawScatter(searchResults) {
             })
             .attr("r", 3)
             .style("fill", function(d) {
-                if(searchResults == null){return "blue"}
+                if(searchResults == null){return "#cc2400"}
                 for (var i = 0; i < searchResults.length; i++) {
                     if (searchResults[i] != null && searchResults[i].getTime() === d.Date.getTime()) {
-                        return "blue";
+                        return "#cc2400";
                     }
                 }
                 return "none";
