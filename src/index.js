@@ -5,7 +5,20 @@ var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 var myList;
 
 let map = new Map();
-//initial view
+
+d3.csv(wordData).then(function(data) {
+    for (let i = 0; i < data.length; i++) {
+        // First poblate the map.
+        if (!map.has(data[i].Word)) {
+
+            // If we don't have the next word then we add it with an array.
+            map.set(data[i].Word, []);
+        }
+        // Get the array of the word and push the date.
+        map.get(data[i].Word).push(data[i].Date);
+    }
+});
+
 drawScatter(myList);
 
 // Set the dimensions and margins of the graph
@@ -30,47 +43,35 @@ d3.select("#form")
         var input = document.getElementById("input").value;
         var tokens = input.split(" ");
         var searchResults = [];
-        d3.csv(wordData).then(function(data) {
-            for (let i = 0; i < data.length; i++) {
-                // First poblate the map.
-                if (!map.has(data[i].Word)) {
-
-                    // If we don't have the next word then we add it with an array.
-                    map.set(data[i].Word, []);
-                }
-                // Get the array of the word and push the date.
-                map.get(data[i].Word).push(data[i].Date);
-            }
-            searchResults = map.get(tokens[0]);
-            // Search results is initially just the array of the first word
-            for (let i = 1; i < tokens.length; i++) {
-                let temp = [];  // Temp varoable that holds valid dates.
-                let nextArray = map.get(tokens[i]);
-                for (let j = 0; j < nextArray.length; j++) {
-                    // Iterate through the next token's dates
-                    for (let k = 0; k < searchResults.length; k++) {
-                        // Iterate through the dates in search result
-                        if (searchResults[k] == nextArray[j]) {
-                            // only push those dates that are already in search result in temp
-                            // as the results should be only the tweets that have all the words in the input.
-                            temp.push(searchResults[k]);
-                        }
+        searchResults = map.get(tokens[0].toLowerCase());
+        console.log(tokens[0].toLowerCase());
+        // Search results is initially just the array of the first word
+        for (let i = 1; i < tokens.length; i++) {
+            let temp = [];  // Temp variable that holds valid dates.
+            let nextArray = map.get(tokens[i].toLowerCase());
+            for (let j = 0; j < nextArray.length; j++) {
+                // Iterate through the next token's dates
+                for (let k = 0; k < searchResults.length; k++) {
+                    // Iterate through the dates in search result
+                    if (searchResults[k] == nextArray[j]) {
+                        // only push those dates that are already in search result in temp
+                        // as the results should be only the tweets that have all the words in the input.
+                        temp.push(searchResults[k]);
                     }
                 }
-                searchResults = temp;
             }
-            for (let i = 0; i < searchResults.length; i++) {
-                // Parse the times in the valid search results.
-                searchResults[i] = parseTime(searchResults[i]);
-            }
-            map.clear();
-            d3.selectAll("g > *").remove();
-            if (input == "") {      // User did not input anything
-                drawScatter(null);
-            } else {
-                drawScatter(searchResults);
-            }
-        });
+            searchResults = temp;
+        }
+        for (let i = 0; i < searchResults.length; i++) {
+            // Parse the times in the valid search results.
+            searchResults[i] = parseTime(searchResults[i]);
+        }
+        d3.selectAll("g > *").remove();
+        if (input == "") {     // User did not input anything
+            drawScatter(null);
+        } else {
+            drawScatter(searchResults);
+        }
     });
 
 // Draw scatterplot
