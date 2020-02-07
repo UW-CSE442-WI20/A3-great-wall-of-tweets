@@ -4,6 +4,7 @@ const wordData = require('./words_to_id.csv');
 var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 var myList;
 
+let map = new Map();
 //initial view
 drawScatter(myList);
 
@@ -31,43 +32,44 @@ d3.select("#form")
         var searchResults = [];
         d3.csv(wordData).then(function(data) {
             for (let i = 0; i < data.length; i++) {
-                // In this 1st pass we find all the words that match the first
-                // token.
-                if (data[i].Word === tokens[0]) {
-                    searchResults.push(data[i].Date);
+                // First poblate the map.
+                if (!map.has(data[i].Word)) {
+
+                    // If we don't have the next word then we add it with an array.
+                    map.set(data[i].Word, []);
                 }
+                // Get the array of the word and push the date.
+                map.get(data[i].Word).push(data[i].Date);
             }
-            let inter = [];
-            // If there are more than one token
+            searchResults = map.get(tokens[0]);
+            // Search results is initially just the array of the first word
             for (let i = 1; i < tokens.length; i++) {
-                // Go through each token.
-                for (let j = 0; j < data.length; j++) {
-                    // Go through each row again to find the next token
-                    if (data[j].Word === tokens[i]) {
-                        // If we found the word we have to check that its date
-                        // appears in other tweets already in search results.
-                        console.log(data[j].Word);
-                        for (let k = 0; k < searchResults.length; k++) {
-                            if (data[j].Date == searchResults[k]) {
-                                // Only push those that match dates (ids)
-                                inter.push(searchResults[k]);
-                            }
+                let temp = [];  // Temp varoable that holds valid dates.
+                let nextArray = map.get(tokens[i]);
+                for (let j = 0; j < nextArray.length; j++) {
+                    // Iterate through the next token's dates
+                    for (let k = 0; k < searchResults.length; k++) {
+                        // Iterate through the dates in search result
+                        if (searchResults[k] == nextArray[j]) {
+                            // only push those dates that are already in search result in temp
+                            // as the results should be only the tweets that have all the words in the input.
+                            temp.push(searchResults[k]);
                         }
                     }
                 }
-                searchResults = inter;  // Set search results to inter as we couldn;t modify search results.
+                searchResults = temp;
             }
             for (let i = 0; i < searchResults.length; i++) {
-                // Modify the values of search result to be the parsed times.
+                // Parse the times in the valid search results.
                 searchResults[i] = parseTime(searchResults[i]);
             }
+            map.clear();
             d3.selectAll("g > *").remove();
             if (input == "") {      // User did not input anything
                 drawScatter(null);
             } else {
                 drawScatter(searchResults);
             }
-            console.log(searchResults);
         });
     });
 
