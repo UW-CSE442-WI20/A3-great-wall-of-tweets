@@ -4,7 +4,6 @@ const wordData = require('./words_to_id.csv');
 var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 var myList;
 
-
 //initial view
 drawScatter(myList);
 
@@ -31,56 +30,45 @@ d3.select("#form")
         var tokens = input.split(" ");
         var searchResults = [];
         d3.csv(wordData).then(function(data) {
-            // list of tweet IDs matching the search
-            //var searchResults = [];
-            data.forEach(function(d) {
-                d.Date = parseTime(d.Date);
-                if (tokens[0].toLowerCase() === d.Word) {
-                    searchResults.push(d.Date);
+            for (let i = 0; i < data.length; i++) {
+                // In this 1st pass we find all the words that match the first
+                // token.
+                if (data[i].Word === tokens[0]) {
+                    searchResults.push(data[i].Date);
                 }
-            });
-            console.log(searchResults);
-            var i;
-            for (i = 1; i < tokens.length; i++) {
-                // For the rest of the tokens
-                var intermediateResults = [];
-                data.forEach(function(d) {
-                   //d.Date = parseTime(d.Date);
-                   //console.log(d.Date);
-                   var j;
-                   var len = searchResults.length;
-                   if (tokens[i].toLowerCase() === d.Word) {
-                       // If the word matches our next token.
-                       d.Date = parseTime(d.Date);
-                       console.log("Entered if statement\n");
-                       for (j = 0; j < len; j++) {
-                          // console.log(searchResults[i]);
-                           if (d.Date === searchResults[j]) {
-                            console.log("pushing date\n");
-                            intermediateResults.push(d.Date);
-                        }
-                       }
-                   }
-                });
-                console.log(intermediateResults);
-                searchResults = intermediateResults;
             }
-
-            // Clear and draw updated scatterplot
-            /*
+            let inter = [];
+            // If there are more than one token
+            for (let i = 1; i < tokens.length; i++) {
+                // Go through each token.
+                for (let j = 0; j < data.length; j++) {
+                    // Go through each row again to find the next token
+                    if (data[j].Word === tokens[i]) {
+                        // If we found the word we have to check that its date
+                        // appears in other tweets already in search results.
+                        console.log(data[j].Word);
+                        for (let k = 0; k < searchResults.length; k++) {
+                            if (data[j].Date == searchResults[k]) {
+                                // Only push those that match dates (ids)
+                                inter.push(searchResults[k]);
+                            }
+                        }
+                    }
+                }
+                searchResults = inter;  // Set search results to inter as we couldn;t modify search results.
+            }
+            for (let i = 0; i < searchResults.length; i++) {
+                // Modify the values of search result to be the parsed times.
+                searchResults[i] = parseTime(searchResults[i]);
+            }
             d3.selectAll("g > *").remove();
             if (input == "") {      // User did not input anything
                 drawScatter(null);
             } else {
                 drawScatter(searchResults);
-            }*/
-        })
-        d3.selectAll("g > *").remove();
-        if (input == "") {      // User did not input anything
-            drawScatter(null);
-        } else {
-            drawScatter(searchResults);
-        }
+            }
+            console.log(searchResults);
+        });
     });
 
 // Draw scatterplot
