@@ -15,7 +15,7 @@ d3.csv(wordData).then(function(data) {
             map.set(data[i].Word, []);
         }
         // Get the array of the word and push the date.
-        map.get(data[i].Word).push(parseTime(data[i].Date));
+        map.get(data[i].Word).push(data[i].Date);
     }
 });
 
@@ -94,27 +94,26 @@ d3.select("#link3")
 //search callback
 d3.select("#form")
     .on("submit", function(d) {
-        console.log("submit callback");
         d3.event.preventDefault();
         var input = document.getElementById("input").value;
-        var tokens = input.split(" ");
+        var tokens = input.trim().split(" ");
+        console.log(map);
         var searchResults = [];
         let valid = true;
         for (let i = 0; i < tokens.length; i++) {
-            if (!map.has(tokens[i].toLowerCase())) {
-                console.log("invalid");
+            if (!map.has(tokens[i].toLowerCase().trim())) {
                 valid = false;
             }
         }
         if (valid) {
-            console.log("getting info");
-            searchResults = map.get(tokens[0].toLowerCase());
-            console.log(map.get(tokens[0]));
-            console.log(searchResults);
-            // Search results is initially just the array of the first word
+            let arr = map.get(tokens[0].toLowerCase().trim());
+            for (let i = 0; i < arr.length; i++) {
+                // So that we store a copy rather than the references themselves
+                searchResults.push(arr[i]);
+            }
             for (let i = 1; i < tokens.length; i++) {
                 let temp = [];  // Temp variable that holds valid dates.
-                let nextArray = map.get(tokens[i].toLowerCase());
+                let nextArray = map.get(tokens[i].toLowerCase().trim());
                 for (let j = 0; j < nextArray.length; j++) {
                     // Iterate through the next token's dates
                     for (let k = 0; k < searchResults.length; k++) {
@@ -128,12 +127,15 @@ d3.select("#form")
                 }
                 searchResults = temp;
             }
+
+            for (let i = 0; i < searchResults.length; i++) {
+                searchResults[i] = parseTime(searchResults[i]);
+            }
         }
         d3.selectAll("g > *").remove();
         if (input == "") {     // User did not input anything
             drawScatter(null);
         } else {
-            console.log(searchResults);
             drawScatter(searchResults);
         }
     });
