@@ -167,7 +167,7 @@ function drawScatter(searchResults) {
             .range([0, width]);
         var xAxis = svg.append("g")
             .attr("transform", "translate(0," + (height - 20) + ")")
-            .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b %y")));
+            .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b %Y")));
 
         // Add Y axis
         var y = d3.scaleLinear()
@@ -196,7 +196,7 @@ function drawScatter(searchResults) {
             .attr("id", "clip")
             .append("svg:rect")
             .attr("width", width)
-            .attr("height", height)
+            .attr("height", height-20)
             .attr("x", 0)
             .attr("y", 0);
 
@@ -282,7 +282,7 @@ function drawScatter(searchResults) {
         function zoomed() {
             var newX = d3.event.transform.rescaleX(x);
             var newY = d3.event.transform.rescaleY(y);
-            xAxis.call(d3.axisBottom(newX).tickFormat(d3.timeFormat("%b %y")))
+            xAxis.call(d3.axisBottom(newX).tickFormat(d3.timeFormat("%b %e, %Y")))
             scat.attr('cx', function (d) {
                 return newX(d.Date)
             })
