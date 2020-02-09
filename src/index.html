@@ -5,6 +5,10 @@
     <title>Great Wall of Tweets</title>
   </head>
   <style>
+    h1 {
+      font-family: trebuchet ms;
+    }
+
     div.tooltip {
       position: absolute;
       text-align: center;
@@ -25,6 +29,7 @@
       box-sizing: border-box;
       border: 2px solid #00acee;
       border-radius: 4px;
+      font-family: trebuchet ms;
     }
 
     input[type=submit] {
@@ -34,18 +39,38 @@
       padding: 13px 20px;
       margin: 4px 2px;
       cursor: pointer;
+      font-family: trebuchet ms;
     }
 
-    p.click {
+    div.click {
       cursor: pointer;
       text-decoration: underline;
+      text-underline-position: under;
+      font-family: trebuchet ms;
+      float: left;
+      font-size: 12px;
+      margin-right: 10px;
+      padding-top: 11px;
+    }
+
+    p.description {
+      font-family: trebuchet ms;
+      float: left;
+      font-size: 12px;
+      margin-right: 3px;
     }
   </style>
   <body>
     <h1>Great Wall of Tweets</h1>
-    <p class="click" id="link1">MakeAmericaGreatAgain</p>
-    <p class="click" id="link2">Clinton</p>
-    <p class="click" id="link3">Republican</p>
+    <div>
+      <p class="description">Hello</p>
+      <div class="click" id="link1">MakeAmericaGreatAgain</div>
+      <p class="description">,</p>
+      <div class="click" id="link2">Clinton</div>
+      <p class="description">, or</p>
+      <div class="click" id="link3">Republican</div>
+    </div>
+    <br>
     <form id="form">
       <input type="text" id="input" placeholder="Enter a keyword...">
       <input type="submit" id="submit"  value="Search" >
