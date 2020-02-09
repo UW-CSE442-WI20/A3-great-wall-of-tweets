@@ -49,7 +49,7 @@
       font-family: trebuchet ms;
       float: left;
       font-size: 12px;
-      margin-right: 10px;
+      margin-right: 0px;
       padding-top: 11px;
     }
 
@@ -59,23 +59,34 @@
       font-size: 12px;
       margin-right: 3px;
     }
+
+    p.text-description {
+      font-family: trebuchet ms;
+      font-size: 12px;
+    }
+
+    ul {
+      font-family: trebuchet ms;
+      font-size: 12px;
+    }
   </style>
   <body>
     <h1>Great Wall of Tweets</h1>
     <div>
-      <p> This site allows you to visualize and observe different Donald Trump tweets tweeted in 2015/16. It has certain functionalities, such as:</p>
+      <p class="text-description"> This site allows you to visualize and observe different Donald Trump tweets tweeted in 2015/16. It has certain functionalities, such as:</p>
       <ul>
         <li>Tooltip shows the exact tweet of the pointed sample</li>
         <li>Use search to get tweets including specific keyword</li>
         <li>Zoom in and out</li>
       </ul> 
-      <p> Below are some of our suggestions to filtering. Have fun!</p>
+      <p class="text-description"> Below are some of our suggestions to filtering. Have fun!</p>
       <div class="click" id="link1">MakeAmericaGreatAgain</div>
       <p class="description">,</p>
       <div class="click" id="link2">Clinton</div>
-      <p class="description">, or</p>
+      <p class="description">, </p>
       <div class="click" id="link3">Republican</div>
     </div>
+    <br>
     <br>
     <br>
     <form id="form">
