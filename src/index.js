@@ -43,7 +43,7 @@ d3.select("#link1")
             var americaResults = [];
             data.forEach(function(d) {
                 d.Date = parseTime(d.Date);
-                if (d.Word === 'america') {
+                if (d.Word === 'makeamericagreatagain') {
                     americaResults.push(d.Date);
                 }
             });
