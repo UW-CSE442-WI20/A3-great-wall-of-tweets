@@ -43,7 +43,7 @@ d3.select("#link1")
             var americaResults = [];
             data.forEach(function(d) {
                 d.Date = parseTime(d.Date);
-                if (d.Word === 'america') {
+                if (d.Word === 'makeamericagreatagain') {
                     americaResults.push(d.Date);
                 }
             });
@@ -166,13 +166,13 @@ function drawScatter(searchResults) {
             }))
             .range([0, width]);
         var xAxis = svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(0," + (height - 20) + ")")
             .call(d3.axisBottom(x));
 
         // Add Y axis
         var y = d3.scaleLinear()
             .domain([0, 20])
-            .range([height, 0]);
+            .range([height - 20, 0]);
         var yAxis = svg.append("g")
             .call(d3.axisLeft(y));
         
@@ -202,6 +202,25 @@ function drawScatter(searchResults) {
 
         var scatter = svg.append('g')
             .attr("clip-path", "url(#clip)");
+
+        // Text label for the x axis
+        svg.append("text")
+            .attr("transform",
+                "translate(" + (width/2) + " ," +
+                (height + margin.top + 20) + ")")
+            .style("text-anchor", "middle")
+            .style("font-family", "trebuchet ms")
+            .text("Date");
+
+        // Text label for the y axis
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style("font-family", "trebuchet ms")
+            .text("Popularity");
 
         //Add dots
         scatter.selectAll("dot")
