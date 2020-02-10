@@ -288,7 +288,12 @@ function drawScatter(searchResults) {
         function zoomed() {
             var newX = d3.event.transform.rescaleX(x);
             var newY = d3.event.transform.rescaleY(y);
-            xAxis.call(d3.axisBottom(newX).tickFormat(d3.timeFormat("%b %e, %Y")))
+            xAxis.call(d3.axisBottom(newX).tickFormat(function(date) {
+                if (d3.event.transform.k == 1) {
+                    return d3.timeFormat("%b %Y")(date);
+                } else {
+                    return d3.timeFormat("%b %e, %Y")(date);
+                }}));
             scat.attr('cx', function (d) {
                     return newX(d.Date)
                 })
