@@ -139,9 +139,14 @@ d3.select("#form")
             }
         }
         d3.selectAll("g > *").remove();
+        //console.log(searchResults);
         if (input == "") {     // User did not input anything
             drawScatter(null);
+        } else if(searchResults.length == 0){
+            console.log("else if" + searchResults);
+            drawScatter(searchResults);
         } else {
+            //console.log(searchResults);
             drawScatter(searchResults);
         }
     });
@@ -153,6 +158,15 @@ function drawScatter(searchResults) {
         data.forEach(function (d) {
             d.Date = parseTime(d.Date);
         });
+        
+        if(searchResults.length == 0){
+            d3.select("#err")
+                .style("opacity", 1);
+        }else{
+            d3.select("#err")
+                .style("opacity", 0);
+        }
+      
 
         // Zoom feature
         var zoom = d3.zoom()

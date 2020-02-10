@@ -48,6 +48,13 @@ p.text-description {
     margin-left: 10px;
     margin-right: 10px;
 }
+p.errormsg{
+    font-family: trebuchet ms;
+    font-size: 12px;
+    margin-left: 10px;
+    margin-right: 10px;
+    color:red;
+}
 
 ul {
     font-family: trebuchet ms;
