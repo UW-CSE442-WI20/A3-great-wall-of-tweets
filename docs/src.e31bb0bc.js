@@ -28918,10 +28918,14 @@ var margin = {
   bottom: 30,
   left: 60
 },
-    width = 1300 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom; // Append the svg object to the body of the page
+    width = 1100 - margin.left - margin.right,
+    height = 700 - margin.top - margin.bottom; // Append the svg object to the body of the page
 
-var svg = d3.select("#dataviz").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"); // First suggestion
+var wid = width + margin.left + margin.right;
+var hei = height + margin.top + margin.bottom;
+var svg = d3.select("#dataviz").append("svg").attr('preserveAspectRatio', 'xMinYMin meet').attr('viewBox', "0 0 " + wid + " " + hei) //.attr("width", width + margin.left + margin.right)
+//.attr("height", height + margin.top + margin.bottom)
+.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"); // First suggestion
 
 d3.select("#link1").on("click", function (d) {
   d3.event.preventDefault();
@@ -28975,18 +28979,20 @@ d3.select("#form").on("submit", function (d) {
   d3.event.preventDefault();
   var input = document.getElementById("input").value;
   var tokens = input.trim().split(" ");
-  console.log(map);
   var searchResults = [];
   var valid = true;
+  var regex = /[^A-Za-z_]/;
 
   for (var i = 0; i < tokens.length; i++) {
-    if (!map.has(tokens[i].toLowerCase().trim())) {
+    tokens[i] = tokens[i].toLowerCase().trim().replace(regex, "");
+
+    if (!map.has(tokens[i])) {
       valid = false;
     }
   }
 
   if (valid) {
-    var arr = map.get(tokens[0].toLowerCase().trim());
+    var arr = map.get(tokens[0]);
 
     for (var _i = 0; _i < arr.length; _i++) {
       // So that we store a copy rather than the references themselves
@@ -28996,7 +29002,7 @@ d3.select("#form").on("submit", function (d) {
     for (var _i2 = 1; _i2 < tokens.length; _i2++) {
       var temp = []; // Temp variable that holds valid dates.
 
-      var nextArray = map.get(tokens[_i2].toLowerCase().trim());
+      var nextArray = map.get(tokens[_i2]);
 
       for (var j = 0; j < nextArray.length; j++) {
         // Iterate through the next token's dates
@@ -29018,22 +29024,33 @@ d3.select("#form").on("submit", function (d) {
     }
   }
 
-  d3.selectAll("g > *").remove();
+  d3.selectAll("g > *").remove(); //console.log(searchResults);
 
   if (input == "") {
     // User did not input anything
     drawScatter(null);
+  } else if (searchResults.length == 0) {
+    console.log("else if" + searchResults);
+    drawScatter(searchResults, true);
   } else {
+    //console.log(searchResults);
     drawScatter(searchResults);
   }
 }); // Draw scatterplot
 
-function drawScatter(searchResults) {
+function drawScatter(searchResults, errFlag) {
   d3.csv(csvFile).then(function (data) {
     // Convert to Date format
     data.forEach(function (d) {
       d.Date = parseTime(d.Date);
-    }); // Zoom feature
+    });
+
+    if (errFlag) {
+      d3.select("#err").style("opacity", 1);
+    } else {
+      d3.select("#err").style("opacity", 0);
+    } // Zoom feature
+
 
     var zoom = d3.zoom().scaleExtent([1, 20]) //translateExtent insert bounds
     //or restrict zoom to one axis
@@ -29043,16 +29060,20 @@ function drawScatter(searchResults) {
     var x = d3.scaleTime().domain(d3.extent(data, function (d) {
       return d.Date;
     })).range([0, width]);
-    var xAxis = svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(x)); // Add Y axis
+    var xAxis = svg.append("g").attr("transform", "translate(0," + (height - 20) + ")").call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b %Y"))); // Add Y axis
 
-    var y = d3.scaleLinear().domain([0, 20]).range([height, 0]);
+    var y = d3.scaleLinear().domain([0, 20]).range([height - 20, 0]);
     var yAxis = svg.append("g").call(d3.axisLeft(y));
     svg.append("rect").attr("width", width).attr("height", height).style("fill", "none").style("pointer-events", "all").attr('transform', 'translate(' + margin.left + ',' + margin.top + ')').call(zoom); // Define the div for the tooltip
 
     var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0).style("pointer-events", "none"); // Add a clipPath: everything out of this area won't be drawn.
 
-    var clip = svg.append("defs").append("svg:clipPath").attr("id", "clip").append("svg:rect").attr("width", width).attr("height", height).attr("x", 0).attr("y", 0);
-    var scatter = svg.append('g').attr("clip-path", "url(#clip)"); //Add dots
+    var clip = svg.append("defs").append("svg:clipPath").attr("id", "clip").append("svg:rect").attr("width", width).attr("height", height - 20).attr("x", 0).attr("y", 0);
+    var scatter = svg.append('g').attr("clip-path", "url(#clip)"); // Text label for the x axis
+
+    svg.append("text").attr("transform", "translate(" + width / 2 + " ," + (height + margin.top + 20) + ")").style("text-anchor", "middle").style("font-family", "trebuchet ms").text("Date"); // Text label for the y axis
+
+    svg.append("text").attr("transform", "rotate(-90)").attr("y", 0 - margin.left).attr("x", 0 - height / 2).attr("dy", "1em").style("text-anchor", "middle").style("font-family", "trebuchet ms").text("Popularity"); //Add dots
 
     scatter.selectAll("dot").data(data).enter().append("circle").attr("cx", function (d) {
       return x(d.Date);
@@ -29060,12 +29081,13 @@ function drawScatter(searchResults) {
       return y(d.Popularity_log);
     }).attr("r", 3).style("fill", function (d) {
       if (searchResults == null) {
-        return "#cc2400";
-      }
+        return "#00acee";
+      } //"#cc2400"
+
 
       for (var i = 0; i < searchResults.length; i++) {
         if (searchResults[i] != null && searchResults[i].getTime() === d.Date.getTime()) {
-          return "#cc2400";
+          return "#00acee";
         }
       }
 
@@ -29096,7 +29118,13 @@ function drawScatter(searchResults) {
     function zoomed() {
       var newX = d3.event.transform.rescaleX(x);
       var newY = d3.event.transform.rescaleY(y);
-      xAxis.call(d3.axisBottom(newX));
+      xAxis.call(d3.axisBottom(newX).tickFormat(function (date) {
+        if (d3.event.transform.k == 1) {
+          return d3.timeFormat("%b %Y")(date);
+        } else {
+          return d3.timeFormat("%b %e, %Y")(date);
+        }
+      }));
       scat.attr('cx', function (d) {
         return newX(d.Date);
       }).attr('cy', function (d) {
@@ -29133,7 +29161,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58118" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55236" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
