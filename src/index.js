@@ -27,13 +27,18 @@ var margin = {top: 10, right: 30, bottom: 30, left: 60},
     height = 600 - margin.top - margin.bottom;
 
 // Append the svg object to the body of the page
+var wid = width + margin.left + margin.right;
+var hei = height + margin.top + margin.bottom;
 var svg = d3.select("#dataviz")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr('preserveAspectRatio', 'xMinYMin meet')
+    .attr('viewBox', "0 0 " + wid + " " + hei)
+    //.attr("width", width + margin.left + margin.right)
+    //.attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
+
 
 // First suggestion
 d3.select("#link1")
@@ -235,7 +240,7 @@ function drawScatter(searchResults) {
             })
             .attr("r", 3)
             .style("fill", function(d) {
-                if(searchResults == null){return "#cc2400"}
+                if(searchResults == null){return "#00acee"} //"#cc2400"
                 for (var i = 0; i < searchResults.length; i++) {
                     if (searchResults[i] != null && searchResults[i].getTime() === d.Date.getTime()) {
                         return "#cc2400";

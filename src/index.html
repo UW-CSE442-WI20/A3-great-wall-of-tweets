@@ -8,28 +8,32 @@
   <body>
     <div class="sidenav">
       <img src="trump-pic.jpg" alt="Trump Tweets">
-      <h1>Great Wall of Tweets</h1>
+      <h1>Great Wall of Trump Tweets</h1>
       <div>
-        <p class="text-description"> This site allows you to visualize and observe different Donald Trump tweets tweeted in 2015/16 leading up to the presidential election. It has certain functionalities, such as:</p>
+        <p class="text-description"> This site allows you to visualize and observe what Donald Trump tweeted 
+          in 2015-16 leading up to the presidential election. The scatter plot charts tweets by date and popularity. 
+          Popularity value is a normalized log of the sum of retweets and likes. <br/> <br/>
+          Explore the scatter plot on your own utilizing these functions:</p>
         <ul>
-          <li>Tooltip shows the exact tweet of the pointed sample</li>
-          <li>Use search to get tweets including specific keyword</li>
-          <li>Zoom in and out</li>
+          <li>Tooltips show the tweet's text of the pointed sample</li>
+          <li>Use search to filter tweets by keywords and phrases</li>
+          <li>Zoom in and out for more detail</li>
         </ul>
-        <p class="text-description"> Below are some of our suggestions to filtering. Have fun!</p>
+        <p class="text-description"> Below are some of our suggestions for filtering. Have fun!</p>
         <p class="description">&nbsp;&nbsp;</p>
         <div class="click" id="link1">MakeAmericaGreatAgain</div>
         <p class="description">,</p>
         <div class="click" id="link2">Clinton</div>
         <p class="description">, </p>
         <div class="click" id="link3">Republican</div>
+        <form id="form">
+          <input type="text" id="input" placeholder="Enter a keyword...">
+          <input type="submit" id="submit"  value="Search" >
+        </form>
       </div>
     </div>
     <div class="main">
-    <form id="form">
-      <input type="text" id="input" placeholder="Enter a keyword...">
-      <input type="submit" id="submit"  value="Search" >
-    </form>
+
     <div id="dataviz"></div>
     <script src="./index.js"></script>
     </div>
