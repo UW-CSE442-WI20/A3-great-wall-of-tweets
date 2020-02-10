@@ -102,23 +102,24 @@ d3.select("#form")
         d3.event.preventDefault();
         var input = document.getElementById("input").value;
         var tokens = input.trim().split(" ");
-        console.log(map);
         var searchResults = [];
         let valid = true;
+        let regex = /[^A-Za-z_]/;
         for (let i = 0; i < tokens.length; i++) {
-            if (!map.has(tokens[i].toLowerCase().trim())) {
+            tokens[i] = tokens[i].toLowerCase().trim().replace(regex, "");
+            if (!map.has(tokens[i])) {
                 valid = false;
             }
         }
         if (valid) {
-            let arr = map.get(tokens[0].toLowerCase().trim());
+            let arr = map.get(tokens[0]);
             for (let i = 0; i < arr.length; i++) {
                 // So that we store a copy rather than the references themselves
                 searchResults.push(arr[i]);
             }
             for (let i = 1; i < tokens.length; i++) {
                 let temp = [];  // Temp variable that holds valid dates.
-                let nextArray = map.get(tokens[i].toLowerCase().trim());
+                let nextArray = map.get(tokens[i]);
                 for (let j = 0; j < nextArray.length; j++) {
                     // Iterate through the next token's dates
                     for (let k = 0; k < searchResults.length; k++) {
