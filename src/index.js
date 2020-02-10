@@ -23,7 +23,7 @@ drawScatter(myList);
 
 // Set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 60},
-    width = 1300 - margin.left - margin.right,
+    width = 1100 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
 // Append the svg object to the body of the page
@@ -284,8 +284,8 @@ function drawScatter(searchResults) {
             var newY = d3.event.transform.rescaleY(y);
             xAxis.call(d3.axisBottom(newX).tickFormat(d3.timeFormat("%b %e, %Y")))
             scat.attr('cx', function (d) {
-                return newX(d.Date)
-            })
+                    return newX(d.Date)
+                })
                 .attr('cy', function (d) {
                     return newY(d.Popularity_log)
                 });

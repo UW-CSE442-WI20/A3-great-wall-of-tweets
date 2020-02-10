@@ -1,116 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <link>
     <meta charset="UTF-8">
     <title>Great Wall of Tweets</title>
+  <link href="style.css" rel="stylesheet">
   </head>
-  <style>
-    h1 {
-      font-family: trebuchet ms;
-    }
-
-    div.tooltip {
-      position: absolute;
-      text-align: center;
-      max-width: 200px;
-      height: auto;
-      padding: 2px;
-      font: 12px arial;
-      background: #ece6e4;
-      border: 0px;
-      border-radius: 8px;
-      pointer-events: none;
-      text-align: center;
-    }
-
-    input[type=text] {
-      padding: 12px 20px;
-      margin: 8px 0;
-      box-sizing: border-box;
-      border: 2px solid #00acee;
-      border-radius: 4px;
-      font-family: trebuchet ms;
-    }
-
-    input[type=submit] {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 13px 20px;
-      margin: 4px 2px;
-      cursor: pointer;
-      font-family: trebuchet ms;
-    }
-
-    input[type=submit]:hover {
-      background-color: #009900;
-      border: none;
-      color: white;
-      padding: 13px 20px;
-      margin: 4px 2px;
-      cursor: pointer;
-      font-family: trebuchet ms;
-    }
-
-    div.click {
-      cursor: pointer;
-      text-decoration: underline;
-      font-family: trebuchet ms;
-      float: left;
-      font-size: 12px;
-      margin-right: 0px;
-      padding-top: 11px;
-    }
-
-    div.click:hover {
-      color: #cc2400;
-      font-weight: bold;
-      font-style: italic;
-      font-size: 13px;
-    }
-
-    p.description {
-      font-family: trebuchet ms;
-      float: left;
-      font-size: 12px;
-      margin-right: 3px;
-    }
-
-    p.text-description {
-      font-family: trebuchet ms;
-      font-size: 12px;
-    }
-
-    ul {
-      font-family: trebuchet ms;
-      font-size: 12px;
-    }
-  </style>
   <body>
-    <h1>Great Wall of Tweets</h1>
-    <div>
-      <p class="text-description"> This site allows you to visualize and observe different Donald Trump tweets tweeted in 2015/16. It has certain functionalities, such as:</p>
-      <ul>
-        <li>Tooltip shows the exact tweet of the pointed sample</li>
-        <li>Use search to get tweets including specific keyword</li>
-        <li>Zoom in and out</li>
-      </ul> 
-      <p class="text-description"> Below are some of our suggestions to filtering. Have fun!</p>
-      <div class="click" id="link1">MakeAmericaGreatAgain</div>
-      <p class="description">,</p>
-      <div class="click" id="link2">Clinton</div>
-      <p class="description">, </p>
-      <div class="click" id="link3">Republican</div>
+    <div class="sidenav">
+      <img src="trump-pic.jpg" alt="Trump Tweets">
+      <h1>Great Wall of Tweets</h1>
+      <div>
+        <p class="text-description"> This site allows you to visualize and observe different Donald Trump tweets tweeted in 2015/16 leading up to the presidential election. It has certain functionalities, such as:</p>
+        <ul>
+          <li>Tooltip shows the exact tweet of the pointed sample</li>
+          <li>Use search to get tweets including specific keyword</li>
+          <li>Zoom in and out</li>
+        </ul>
+        <p class="text-description"> Below are some of our suggestions to filtering. Have fun!</p>
+        <p class="description">&nbsp;&nbsp;</p>
+        <div class="click" id="link1">MakeAmericaGreatAgain</div>
+        <p class="description">,</p>
+        <div class="click" id="link2">Clinton</div>
+        <p class="description">, </p>
+        <div class="click" id="link3">Republican</div>
+      </div>
     </div>
-    <br>
-    <br>
-    <br>
+    <div class="main">
     <form id="form">
       <input type="text" id="input" placeholder="Enter a keyword...">
       <input type="submit" id="submit"  value="Search" >
     </form>
-    <!-- Create a div where the graph will take place -->
     <div id="dataviz"></div>
     <script src="./index.js"></script>
+    </div>
   </body>
 </html>
