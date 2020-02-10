@@ -144,7 +144,7 @@ d3.select("#form")
             drawScatter(null);
         } else if(searchResults.length == 0){
             console.log("else if" + searchResults);
-            drawScatter(searchResults);
+            drawScatter(searchResults, true);
         } else {
             //console.log(searchResults);
             drawScatter(searchResults);
@@ -152,14 +152,14 @@ d3.select("#form")
     });
 
 // Draw scatterplot
-function drawScatter(searchResults) {
+function drawScatter(searchResults, errFlag) {
     d3.csv(csvFile).then(function (data) {
         // Convert to Date format
         data.forEach(function (d) {
             d.Date = parseTime(d.Date);
         });
         
-        if(searchResults.length == 0){
+        if(errFlag){
             d3.select("#err")
                 .style("opacity", 1);
         }else{
