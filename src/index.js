@@ -24,7 +24,7 @@ drawScatter(myList);
 // Set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 60},
     width = 1100 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+    height = 700 - margin.top - margin.bottom;
 
 // Append the svg object to the body of the page
 var wid = width + margin.left + margin.right;
@@ -243,7 +243,7 @@ function drawScatter(searchResults) {
                 if(searchResults == null){return "#00acee"} //"#cc2400"
                 for (var i = 0; i < searchResults.length; i++) {
                     if (searchResults[i] != null && searchResults[i].getTime() === d.Date.getTime()) {
-                        return "#cc2400";
+                        return "#00acee";
                     }
                 }
                 return "none";
