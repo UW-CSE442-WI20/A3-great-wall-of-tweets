@@ -63,5 +63,9 @@ There was more than one way to go about keyword-based exploration, and we had tw
 The first two meetings were used to brainstorm visual encoding choices and an overview of aesthetics of the final deliverable, which was finalized mid-development. Our development process split into major sub-components required to build the final product - Exploratory Data Analysis, Search System, and the Frontend. Members assigned to the specific field would perform the task as planned during the meeting until the next one, and whenever available a member could either take a break or complete their task to help with another. For instance, while two of us developed code for scatter plot the other two handled EDA and data cleaning, and then one would move on to the search system while the other kept handling data and so on. Once the frontend group had a functioning scatter plot, they moved on to developing interactive features. Near the end of the development process the group worked in a more flexible way, where a handful of bugs and issues were found and fixed across the entire project. In the final group sessions we made small changes to the layout and style as refinements to its presentation. We believe that the project overall took about 30~35 hours, with the frontend development and refinement for aesthetics taking the most time, given we had to discuss and analyze the aesthetics for both the visual encoding design and their presentation.
 
 Works used:
-Link to Data: https://www.kaggle.com/kingburrito666/better-donald-trump-tweets
-CNN Image of Donald Trump. CNN 5 Jan. 2020, https://cdn.cnn.com/cnnnext/dam/assets/190323113700-0322-trump-twitter-update-exlarge-169.jpg
+
+[Link to Donald Trump's Tweets Data](https://www.kaggle.com/kingburrito666/better-donald-trump-tweets)
+
+[Link to Stop Words List](https://gist.github.com/sebleier/554280#gistcomment-2892081)
+
+[CNN Image of Donald Trump. CNN 5 Jan. 2020](https://cdn.cnn.com/cnnnext/dam/assets/190323113700-0322-trump-twitter-update-exlarge-169.jpg)
